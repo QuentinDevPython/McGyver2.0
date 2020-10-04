@@ -1,7 +1,11 @@
 import random
 
+'''class that manages the different elements that make up the maze'''
+
 
 class Maze:
+
+    '''function that instantiates the lists or tuples of the postions of the various elements of the maze'''
 
     def __init__(self):
         self.wall = []
@@ -13,7 +17,7 @@ class Maze:
         self.guardian = (0, 0)
 
     '''function that read the maze file and convert each part of the maze (wall, floor, ...) in geographic coordinates
-    and put them in their respective lists'''
+    and put them in their respective lists or tuples'''
 
     def create_maze(self, width, length):
 
@@ -49,6 +53,9 @@ class Maze:
                 self.player_position = self.start
                 self.guardian = self.end
 
+    '''function that initializes the random position of items in the maze as 
+    coordinates stored in a list of items'''
+
     def define_item_square(self, length):
         nb_items = 0
         while nb_items != 4:
@@ -75,6 +82,8 @@ class Maze:
                         position = False
                     index += 1
             nb_items += 1
+
+    '''function that creates the maze as a text and returns it'''
 
     def create_maze_map(self, map_printed, width, length):
         position_map = (0, 0)
@@ -106,7 +115,7 @@ class Maze:
         # print(map_printed) ## for console game
         return map_printed
 
-        # What the player is looking (direction)
+    '''function that checks that the next location wanted by the player is a floor'''
 
     def next_square_is_floor(self, add_x, add_y):
         next_player_square = (
@@ -118,16 +127,22 @@ class Maze:
             if next_player_square == item_square:
                 return True
 
+    '''function that checks that the location on which the player is located is occupied by an item'''
+
     def square_is_item(self):
         for key, value in self.items_position.items():
             if self.player_position == value:
                 return True
+
+    '''function that checks that the player’s right square is the finish square'''
 
     def next_square_is_arrival(self):
         next_player_square = (
             self.player_position[0] + 1, self.player_position[1])
         if next_player_square == self.end:
             return True
+
+    '''function that deletes an item when the player is on the same square as the item'''
 
     def remove_item(self):
         position_removed_item = self.player_position
