@@ -2,8 +2,15 @@ import pygame
 from maze import Maze
 from player import Player
 
+'''class that initiates the game of the maze, updates it according to each 
+action of the player and graphically displays the game'''
+
 
 class Game:
+
+    '''function that instantiates the class "Game" by loading and resizing the 
+    images of the game, defines the width and height of the maze and initializes 
+    the grid and the player'''
 
     def __init__(self):
         self.maze = Maze()
@@ -36,6 +43,8 @@ class Game:
         self.syringe_image = pygame.image.load(
             'mcgyver/assets/items/syringe.png')
 
+    '''function that launches the game window and follows the player’s actions'''
+
     def run_game(self):
 
         pygame.init()
@@ -57,55 +66,10 @@ class Game:
 
         while running:
 
-            map_printed = ''
-            map_in_window = self.maze.create_maze_map(
-                map_printed, self.width, self.length)
-            map_in_window = map_in_window.split(' ')
-
-            index = 0
-            for line_maze in range(self.width):
-                for column_maze in range(self.length):
-                    if (line_maze, column_maze) != (0, 0):
-                        index += 1
-                    if map_in_window[index] == '#':
-                        screen.blit(self.wall_image,
-                                    (column_maze * 40, line_maze * 40))
-                    elif map_in_window[index] == 'f':
-                        screen.blit(self.floor_image,
-                                    (column_maze * 40, line_maze * 40))
-                    elif map_in_window[index] == 'x':
-                        screen.blit(self.floor_image,
-                                    (column_maze * 40, line_maze * 40))
-                        screen.blit(self.player_image,
-                                    (column_maze * 40, line_maze * 40))
-                    elif map_in_window[index] == 'a':
-                        screen.blit(self.end_image,
-                                    (column_maze * 40, line_maze * 40))
-                        screen.blit(self.guardian_image,
-                                    (column_maze * 40, line_maze * 40))
-                    else:
-                        screen.blit(self.floor_image,
-                                    (column_maze * 40, line_maze * 40))
-                        if map_in_window[index] == 'e':
-                            screen.blit(self.ether_image,
-                                        (column_maze * 40, line_maze * 40))
-                        elif map_in_window[index] == 'n':
-                            screen.blit(self.needle_image,
-                                        (column_maze * 40, line_maze * 40))
-                        elif map_in_window[index] == 'p':
-                            screen.blit(self.plastic_tube_image,
-                                        (column_maze * 40, line_maze * 40))
-                        elif map_in_window[index] == 's':
-                            screen.blit(self.syringe_image,
-                                        (column_maze * 40, line_maze * 40))
-
-            pygame.display.flip()
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                     pygame.quit()
-
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RIGHT and self.player.can_move_right():
                         self.player.move_right()
@@ -117,7 +81,56 @@ class Game:
                         self.player.move_down()
 
             self.player.take_item()
+            self.__update_map(screen)
             running = self.player.is_victorious()
+
+    '''function that graphically displays the elements of the maze and that updates 
+    it with each action of the player'''
+
+    def __update_map(self, screen):
+        map_printed = ''
+        map_in_window = self.maze.create_maze_map(
+            map_printed, self.width, self.length)
+        map_in_window = map_in_window.split(' ')
+
+        index = 0
+        for line_maze in range(self.width):
+            for column_maze in range(self.length):
+                if (line_maze, column_maze) != (0, 0):
+                    index += 1
+                if map_in_window[index] == '#':
+                    screen.blit(self.wall_image,
+                                (column_maze * 40, line_maze * 40))
+                elif map_in_window[index] == 'f':
+                    screen.blit(self.floor_image,
+                                (column_maze * 40, line_maze * 40))
+                elif map_in_window[index] == 'x':
+                    screen.blit(self.floor_image,
+                                (column_maze * 40, line_maze * 40))
+                    screen.blit(self.player_image,
+                                (column_maze * 40, line_maze * 40))
+                elif map_in_window[index] == 'a':
+                    screen.blit(self.end_image,
+                                (column_maze * 40, line_maze * 40))
+                    screen.blit(self.guardian_image,
+                                (column_maze * 40, line_maze * 40))
+                else:
+                    screen.blit(self.floor_image,
+                                (column_maze * 40, line_maze * 40))
+                    if map_in_window[index] == 'e':
+                        screen.blit(self.ether_image,
+                                    (column_maze * 40, line_maze * 40))
+                    elif map_in_window[index] == 'n':
+                        screen.blit(self.needle_image,
+                                    (column_maze * 40, line_maze * 40))
+                    elif map_in_window[index] == 'p':
+                        screen.blit(self.plastic_tube_image,
+                                    (column_maze * 40, line_maze * 40))
+                    elif map_in_window[index] == 's':
+                        screen.blit(self.syringe_image,
+                                    (column_maze * 40, line_maze * 40))
+
+        pygame.display.flip()
 
         ''' # for console game
         while running:
