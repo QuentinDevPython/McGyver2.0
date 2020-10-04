@@ -82,7 +82,6 @@ class Maze:
         player_placement = False
 
         for line_maze in range(width):
-            map_printed += '\n'
             for column_maze in range(length):
                 position_map = (column_maze, line_maze)
                 for wall in self.wall:
@@ -98,13 +97,14 @@ class Maze:
                 if not item_placement and not player_placement:
                     for floor in self.floor:
                         if position_map == floor:
-                            map_printed += '  '
+                            map_printed += 'f '
                 if position_map == self.end:
                     map_printed += 'a '
                 item_placement = False
                 player_placement = False
 
-        print(map_printed)
+        # print(map_printed) ## for console game
+        return map_printed
 
         # What the player is looking (direction)
 
