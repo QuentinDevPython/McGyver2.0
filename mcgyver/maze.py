@@ -1,13 +1,14 @@
-import random
+"""Import the module 'random' to get random numbers."""
 
-'''class that manages the different elements that make up the maze'''
+import random
 
 
 class Maze:
-
-    '''function that instantiates the lists or tuples of the postions of the various elements of the maze'''
+    """class that manages the different elements that make up the maze."""
 
     def __init__(self):
+        """function that instantiates the lists or tuples of the postions of the various elements of the maze."""
+
         self.wall = []
         self.floor = []
         self.start = (0, 0)
@@ -16,10 +17,10 @@ class Maze:
         self.player_position = (0, 0)
         self.guardian = (0, 0)
 
-    '''function that read the maze file and convert each part of the maze (wall, floor, ...) in geographic coordinates
-    and put them in their respective lists or tuples'''
-
     def create_maze(self, width, length):
+        """function that read the maze file and convert each part of the maze (wall, floor, ...) in geographic coordinates
+        and put them in their respective lists or tuples.
+        """
 
         maze = []
         index = 0
@@ -53,10 +54,11 @@ class Maze:
                 self.player_position = self.start
                 self.guardian = self.end
 
-    '''function that initializes the random position of items in the maze as 
-    coordinates stored in a list of items'''
-
     def define_item_square(self, length):
+        """function that initializes the random position of items in the maze as 
+        coordinates stored in a list of items.
+        """
+
         nb_items = 0
         while nb_items != 4:
             if nb_items == 0:
@@ -83,14 +85,15 @@ class Maze:
                     index += 1
             nb_items += 1
 
-    '''function that creates the maze as a text and returns it'''
-
     def create_maze_map(self, map_printed, width, length):
+        """function that creates the maze as a text and returns it."""
+
         position_map = (0, 0)
         item_placement = False
         player_placement = False
 
         for line_maze in range(width):
+            #map_printed += '\n'
             for column_maze in range(length):
                 position_map = (column_maze, line_maze)
                 for wall in self.wall:
@@ -115,9 +118,9 @@ class Maze:
         # print(map_printed) ## for console game
         return map_printed
 
-    '''function that checks that the next location wanted by the player is a floor'''
-
     def next_square_is_floor(self, add_x, add_y):
+        """function that checks that the next location wanted by the player is a floor."""
+
         next_player_square = (
             self.player_position[0] + add_x, self.player_position[1] + add_y)
         for floor_square in self.floor:
@@ -127,24 +130,24 @@ class Maze:
             if next_player_square == item_square:
                 return True
 
-    '''function that checks that the location on which the player is located is occupied by an item'''
-
     def square_is_item(self):
+        """function that checks that the location on which the player is located is occupied by an item."""
+
         for key, value in self.items_position.items():
             if self.player_position == value:
                 return True
 
-    '''function that checks that the player’s right square is the finish square'''
-
     def next_square_is_arrival(self):
+        """function that checks that the player’s right square is the finish square."""
+
         next_player_square = (
             self.player_position[0] + 1, self.player_position[1])
         if next_player_square == self.end:
             return True
 
-    '''function that deletes an item when the player is on the same square as the item'''
-
     def remove_item(self):
+        """function that deletes an item when the player is on the same square as the item."""
+
         position_removed_item = self.player_position
         for key, value in self.items_position.items():
             if position_removed_item == value:
