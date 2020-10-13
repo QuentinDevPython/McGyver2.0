@@ -1,4 +1,7 @@
-from game import Game
+"""Import the class 'Game' in order to launch the game."""
 
-game = Game()
-game.run_game()
+from mcgyver.game import Game
+
+if __name__ == "__main__":
+    game = Game()
+    game.run_game()

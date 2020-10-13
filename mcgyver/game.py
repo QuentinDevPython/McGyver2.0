@@ -1,40 +1,54 @@
-import pygame
-from maze import Maze
-from player import Player
+""" Import the module 'pygame' for writing video games
+Import the other classes 'Maze' and 'Player' to manage the all game
+Import the file 'config' for the constants.
+"""
 
-'''class that initiates the game of the maze, updates it according to each 
-action of the player and graphically displays the game'''
+import pygame
+
+from mcgyver.maze import Maze
+from mcgyver.player import Player
+import config
 
 
 class Game:
 
-    '''function that instantiates the class "Game" by loading and resizing the 
-    images of the game, defines the width and height of the maze and initializes 
-    the grid and the player'''
+    """class that initiates the game of the maze, updates it according to each 
+    action of the player and graphically displays the game.
+    """
 
     def __init__(self):
+        """function that instantiates the class "Game" by loading and resizing the 
+        images of the game, defines the width and height of the maze and initializes 
+        the grid and the player.
+        """
+
         self.maze = Maze()
         self.player = Player(self)
 
-        self.width = 15
-        self.length = 15
+        self.width = config.GAME_WIDTH
+        self.length = config.GAME_HEIGHT
+        self.dimension = config.GAME_SQUARE_DIMENSION
 
         self.wall_image = pygame.image.load(
             'mcgyver/assets/background/wall.png')
-        self.wall_image = pygame.transform.scale(self.wall_image, (40, 40))
+        self.wall_image = pygame.transform.scale(
+            self.wall_image, (self.dimension, self.dimension))
         self.floor_image = pygame.image.load(
             'mcgyver/assets/background/floor.png')
-        self.floor_image = pygame.transform.scale(self.floor_image, (40, 40))
+        self.floor_image = pygame.transform.scale(
+            self.floor_image, (self.dimension, self.dimension))
         self.player_image = pygame.image.load(
             'mcgyver/assets/characters/mac_gyver.png')
-        self.player_image = pygame.transform.scale(self.player_image, (37, 37))
+        self.player_image = pygame.transform.scale(
+            self.player_image, (self.dimension-3, self.dimension-3))
         self.end_image = pygame.image.load(
             'mcgyver/assets/background/end.png')
-        self.end_image = pygame.transform.scale(self.end_image, (40, 40))
+        self.end_image = pygame.transform.scale(
+            self.end_image, (self.dimension, self.dimension))
         self.guardian_image = pygame.image.load(
             'mcgyver/assets/characters/guardian.png')
         self.guardian_image = pygame.transform.scale(
-            self.guardian_image, (38, 38))
+            self.guardian_image, (self.dimension-2, self.dimension-2))
         self.ether_image = pygame.image.load('mcgyver/assets/items/ether.png')
         self.needle_image = pygame.image.load(
             'mcgyver/assets/items/needle.png')
@@ -43,15 +57,14 @@ class Game:
         self.syringe_image = pygame.image.load(
             'mcgyver/assets/items/syringe.png')
 
-    '''function that launches the game window and follows the player’s actions'''
-
     def run_game(self):
+        """function that launches the game window and follows the player’s actions."""
 
         pygame.init()
 
         # define the dimensions of the game window
-        number_squares = 15
-        size_squares = 40
+        number_squares = self.width
+        size_squares = self.dimension
         screen_size = (number_squares * size_squares,
                        number_squares * size_squares)
 
@@ -84,10 +97,11 @@ class Game:
             self.__update_map(screen)
             running = self.player.is_victorious()
 
-    '''function that graphically displays the elements of the maze and that updates 
-    it with each action of the player'''
-
     def __update_map(self, screen):
+        """function that graphically displays the elements of the maze and that updates 
+        it with each action of the player.
+        """
+
         map_printed = ''
         map_in_window = self.maze.create_maze_map(
             map_printed, self.width, self.length)
@@ -100,39 +114,39 @@ class Game:
                     index += 1
                 if map_in_window[index] == '#':
                     screen.blit(self.wall_image,
-                                (column_maze * 40, line_maze * 40))
+                                (column_maze * self.dimension, line_maze * self.dimension))
                 elif map_in_window[index] == 'f':
                     screen.blit(self.floor_image,
-                                (column_maze * 40, line_maze * 40))
+                                (column_maze * self.dimension, line_maze * self.dimension))
                 elif map_in_window[index] == 'x':
                     screen.blit(self.floor_image,
-                                (column_maze * 40, line_maze * 40))
+                                (column_maze * self.dimension, line_maze * self.dimension))
                     screen.blit(self.player_image,
-                                (column_maze * 40, line_maze * 40))
+                                (column_maze * self.dimension, line_maze * self.dimension))
                 elif map_in_window[index] == 'a':
                     screen.blit(self.end_image,
-                                (column_maze * 40, line_maze * 40))
+                                (column_maze * self.dimension, line_maze * self.dimension))
                     screen.blit(self.guardian_image,
-                                (column_maze * 40, line_maze * 40))
+                                (column_maze * self.dimension, line_maze * self.dimension))
                 else:
                     screen.blit(self.floor_image,
-                                (column_maze * 40, line_maze * 40))
+                                (column_maze * self.dimension, line_maze * self.dimension))
                     if map_in_window[index] == 'e':
                         screen.blit(self.ether_image,
-                                    (column_maze * 40, line_maze * 40))
+                                    (column_maze * self.dimension, line_maze * self.dimension))
                     elif map_in_window[index] == 'n':
                         screen.blit(self.needle_image,
-                                    (column_maze * 40, line_maze * 40))
+                                    (column_maze * self.dimension, line_maze * self.dimension))
                     elif map_in_window[index] == 'p':
                         screen.blit(self.plastic_tube_image,
-                                    (column_maze * 40, line_maze * 40))
+                                    (column_maze * self.dimension, line_maze * self.dimension))
                     elif map_in_window[index] == 's':
                         screen.blit(self.syringe_image,
-                                    (column_maze * 40, line_maze * 40))
+                                    (column_maze * self.dimension, line_maze * self.dimension))
 
         pygame.display.flip()
 
-        ''' # for console game
+        """ # for console game
         while running:
             map_printed = ''
             self.maze.create_maze_map(map_printed, self.width, self.length)
@@ -153,4 +167,4 @@ class Game:
                 elif direction == 'S' and self.player.can_move_down():
                     self.player.move_down()
                     bool_direction = True
-            '''
+            """
