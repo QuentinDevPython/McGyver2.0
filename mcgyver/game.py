@@ -2,6 +2,7 @@
 Import the other classes 'Maze' and 'Player' to manage the all game
 Import the file 'config' for the constants.
 """
+import time
 
 import pygame
 
@@ -56,6 +57,12 @@ class Game:
             'mcgyver/assets/items/plastic_tube.png')
         self.syringe_image = pygame.image.load(
             'mcgyver/assets/items/syringe.png')
+        self.win = pygame.image.load(
+            'mcgyver/assets/finish_game/win.png')
+        self.win = pygame.transform.scale(self.win, (200, 200))
+        self.defeat = pygame.image.load(
+            'mcgyver/assets/finish_game/defeat.png')
+        self.defeat = pygame.transform.scale(self.defeat, (200, 200))
 
     def run_game(self):
         """function that launches the game window and follows the player’s actions."""
@@ -71,6 +78,9 @@ class Game:
         # generate the game window
         screen = pygame.display.set_mode(screen_size)
         pygame.display.set_caption('Escape from the maze')
+
+        pygame.font.init()
+        myfont = pygame.font.Font(None, 24)
 
         self.maze.create_maze(self.width, self.length)
         self.maze.define_item_square(self.length)
@@ -94,10 +104,16 @@ class Game:
                         self.player.move_down()
 
             self.player.take_item()
-            self.__update_map(screen)
-            running = self.player.is_victorious()
+            text_items_taken = (
+                'You have taken {}/4 items'.format(self.player.number_items_taken))
+            text = myfont.render(text_items_taken, 1, (255, 255, 255))
+            self.__update_map(screen, text)
 
-    def __update_map(self, screen):
+            running = self.player.is_victorious()[0]
+            if not running:
+                time.sleep(3)
+
+    def __update_map(self, screen, text):
         """function that graphically displays the elements of the maze and that updates 
         it with each action of the player.
         """
@@ -114,9 +130,6 @@ class Game:
                     index += 1
                 if map_in_window[index] == '#':
                     screen.blit(self.wall_image,
-                                (column_maze * self.dimension, line_maze * self.dimension))
-                elif map_in_window[index] == 'f':
-                    screen.blit(self.floor_image,
                                 (column_maze * self.dimension, line_maze * self.dimension))
                 elif map_in_window[index] == 'x':
                     screen.blit(self.floor_image,
@@ -143,6 +156,13 @@ class Game:
                     elif map_in_window[index] == 's':
                         screen.blit(self.syringe_image,
                                     (column_maze * self.dimension, line_maze * self.dimension))
+                screen.blit(text, (20, 10))
+                if self.player.is_victorious()[1] == 1:
+                    screen.blit(self.win, ((self.width * self.dimension) /
+                                           3, (self.length * self.dimension)/3))
+                elif self.player.is_victorious()[1] == 0:
+                    screen.blit(self.defeat, ((self.width * self.dimension) /
+                                              3, (self.length * self.dimension)/3))
 
         pygame.display.flip()
 

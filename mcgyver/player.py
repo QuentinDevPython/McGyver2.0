@@ -69,7 +69,6 @@ class Player:
         if self.game.maze.square_is_item():
             self.number_items_taken += 1
             self.game.maze.remove_item()
-            print('You have taken', self.number_items_taken, '/ 4 items')
 
     def is_victorious(self):
         """function that verifies that the player has retrieved the items when he comes in front 
@@ -77,11 +76,12 @@ class Player:
         """
 
         running = True
+        state_victory = 2
         if self.game.maze.next_square_is_arrival():
             if self.game.maze.items_position == {}:
-                print('Win')
+                state_victory = 1
                 running = False
             else:
-                print('Defeat')
                 running = False
-        return running
+                state_victory = 0
+        return running, state_victory
