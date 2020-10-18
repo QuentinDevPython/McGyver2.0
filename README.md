@@ -11,7 +11,7 @@ How to launch the game ?
 2. Click on the button 'Code' and copy down the text .git that will be similar to 'https://github.com/QuentinDevPython/McGyver2.0.git'
 3. Execute the command 'git clone https://github.com/QuentinDevPython/McGyver2.0.git' in your terminal
 4. In the project folder where you have saved the project, execute the command 'pipenv install' to install the virtual environment
-5. Laucnh this virtual environment with the command 'pipenv shell'
+5. Launch this virtual environment with the command 'pipenv shell'
 6. You can now launch the game with 'python -m mcgyver' 
 
 How to contribute to the project ?
