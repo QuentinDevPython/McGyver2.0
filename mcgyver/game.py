@@ -1,4 +1,5 @@
-""" Import the module 'pygame' for writing video games
+""" Import the time 
+Import the module 'pygame' for writing video games
 Import the other classes 'Maze' and 'Player' to manage the all game
 Import the file 'config' for the constants.
 """
